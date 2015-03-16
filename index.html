@@ -1,15 +1,49 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
+    <meta charset="utf-8">
 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Title Goes Here</title>
+    <!-- libraries -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
 
+    <!-- custom -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
-
-<p>Placeholder website</p>
-
+    <div class="container">
+        <!-- TABS -->
+        <div id="content">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active">
+                    <a href="#main" data-toggle="tab">Description</a>
+                </li>
+                <li>
+                    <a href="#outputs" data-toggle="tab">Outputs</a>
+                </li>
+            </ul>
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="main">
+                    <h3 class="text-center">Description</h3>
+                    <p>This is an agent based simulation of a bimodal corridor where users can select between using their private vehicles and a transit alternative. The simulation tests the effectiveness of certain revenue redistribution policies that specifically target users who have a choice between the two available modes.</p>
+                    <h3>Simulation Parameters</h3>
+                    <p>Here, you <strong>will</strong> be able to set the simulation parameters.</p>
+                </div>
+                <div class="tab-pane" id="outputs">
+                    <h3 class="text-center">Outputs</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/simulation.js"></script>
+    <script type="text/javascript" src="js/visual.js"></script>
 </body>
-</html>
+
