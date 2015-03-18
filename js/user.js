@@ -5,14 +5,8 @@ var userType = Object.freeze({
     CHOICE_TRANSIT:'choiceTransit'
 });
 
-var choice = Object.freeze({
-    CAR:'car',
-    TRANSIT:'transit'
-})
-
-function User(type,choice,wishedTime,errorTransit,errorCar,e,L,X){
+function User(type,wishedTime,errorTransit,errorCar,e,L,X){
     this.type = type;
-    this.choice = choice;
     this.wishedTime = wishedTime;
     this.departureTime = 0;
     this.arrivalTime = 0;
