@@ -21,6 +21,7 @@ var document = noop();
 document.documentElement = noop();
 document.documentElement.style = noop();
 importScripts('d3.min.js');
+importScripts('user.js')
 
 /**
 *This is the worker logic, that includes all the tasks necessary in the simulation.
