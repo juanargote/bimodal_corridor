@@ -24,6 +24,13 @@ importScripts('d3.min.js');
 importScripts('user.js')
 
 /**
+* Define useful constants
+*/
+var constants = Object.freeze({
+    EULER_MASCHERONI: 0.57721566490153286
+})
+
+/**
 *This is the worker logic, that includes all the tasks necessary in the simulation.
 */
 workerPost = self.webkitPostMessage || self.postMessage;
@@ -55,6 +62,17 @@ function run(scenario) {
 
     // Initialize the scenario components: users - timeSlice - bottleneck
 
+    // Initialize users
+    var userArray = [];
+    var gumbelParameters = getGumbelParameters(0,1);
+    for (i=0; i < scenario.N; i++) {
+        var type = getInitialUserType(scenario.alpha,scenario.beta,scenario.initialTransitChoice);
+        var errorTransit = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
+        var errorCar = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
+        var user = new User(type,scenario.wishedTime,errorTransit,errorCar,scenario.e,scenario.L,scenario.X);
+        userArray.push(user);
+    }
+
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
 
     // Simulate the desicion process between car and transit
@@ -83,6 +101,31 @@ function getInitialUserType(alpha,beta,initialTransitChoice) {
             return userType.CHOICE_CAR;
         }
     } else {
-        throw new Error('getInitialUserType(): The arguments'' addition must be a number between 0 and 1.');
+        throw new Error('getInitialUserType(): The sum of the arguments must be between 0 and 1.');
     }
+}
+
+/**
+* Generates a random draw from a Gumbel distribution
+* @param {Number} beta [Scale parameter]
+* @param {Number} mu [Location parameter]
+* @return {Number} random draw
+*/
+function gumbelRandom(mu,beta) {
+    return mu - beta * Math.log(-Math.log(Math.random()));
+}
+
+/**
+* Obtain the Gumbel distribution parameters given a mean and variance
+* @param {Number} mean
+* @param {Number} variance
+* @return {Array} Array containing the parameters mu and beta 
+*/
+function getGumbelParameters(mean,variance) {
+    var params = [];
+    var beta = Math.sqrt(6*variance/Math.pow(Math.PI,2));
+    var mu = - constants.EULER_MASCHERONI * beta;
+    params.push(mu);
+    params.push(beta);
+    return params
 }
