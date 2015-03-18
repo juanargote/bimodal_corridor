@@ -61,3 +61,27 @@ function run(scenario) {
     // Return the results
     return result;
 }
+
+/**
+* Generates a random user type
+* @param {Number} alpha [Ratio of TRANSIT users]
+* @param {Number} beta [Ratio of CAR users]
+* @param {Number} initialTransitChoice [Ratio of initial CHOICE_TRANSIT users]
+* @return {userType} userType
+*/
+function getInitialUserType(alpha,beta,initialTransitChoice) {
+    if (alpha + beta + initialTransitChoice <= 1 && 0 <= alpha + beta + initialTransitChoice ) {
+        var draw = Math.random();
+        if (draw < beta) {
+            return userType.CAR;
+        } else if (beta <= draw && draw < alpha + beta) {
+            return userType.TRANSIT;
+        } else if (beta > 1 - initialTransitChoice) {
+            return userType.CHOICE_TRANSIT;
+        } else {
+            return userType.CHOICE_CAR;
+        }
+    } else {
+        throw new Error('getInitialUserType(): The arguments'' addition must be a number between 0 and 1.');
+    }
+}
