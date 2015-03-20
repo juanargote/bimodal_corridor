@@ -11,7 +11,7 @@ TimeSlice.prototype = {
     setNext:function(timeSlice) {
         this.next = timeSlice;
     },
-    serve:function() {
+    serve:function(bottleneck) {
         // Pop out served users from the queue and update 
         // their attributes (e.g. departure time...)
 

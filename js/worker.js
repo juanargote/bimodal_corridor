@@ -21,7 +21,9 @@ var document = noop();
 document.documentElement = noop();
 document.documentElement.style = noop();
 importScripts('d3.min.js');
-importScripts('user.js')
+importScripts('user.js');
+importScripts('bottleneck.js');
+importScripts('timeslice.js');
 
 /**
 * Define useful constants
@@ -73,6 +75,29 @@ function run(scenario) {
         userArray.push(user);
     }
 
+    // Initialize bottleneck and timeSlices
+    var bottleneckCapacity = scenario.N*scenario.e*scenario.L/(scenario.e+scenario.L);
+    var bottleneck = new Bottleneck(bottleneckCapacity);
+    bottleneck.setUserArray(userArray);
+    
+    var timeSliceArray = [];
+    var totalTimeInterval = 2*scenario.N / bottleneckCapacity;
+    var time = scenario.wishedTime + totalTimeInterval / 2;
+    var timeStep = totalTimeInterval / scenario.N;
+    var timeSlice = new TimeSlice(time);
+    var nextTimeSlice = null;
+    timeSliceArray.unshift(timeSlice);
+
+    for (i=0; i < totalTimeInterval / timeStep; i++) {
+        nextTimeSlice = timeSlice;
+        time -= timeStep;
+        var timeSlice = new TimeSlice(time);
+        timeSlice.setNext(nextTimeSlice);
+        timeSliceArray.unshift(timeSlice)
+    }
+
+    bottleneck.setTimeSliceArray(timeSliceArray);
+    
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
 
     // Simulate the desicion process between car and transit
