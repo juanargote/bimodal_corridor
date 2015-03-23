@@ -2,8 +2,8 @@ function TimeSlice(time) {
     this.time = time;
     this.arrivalTime = 0;
     this.departureTime = 0;
-    queue = [];
-    next = null;
+    this.queue = [];
+    this.next = null;
 }
 
 TimeSlice.prototype = {
