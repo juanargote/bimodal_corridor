@@ -8,8 +8,8 @@ var userType = Object.freeze({
 function User(type,wishedTime,errorTransit,errorCar,e,L,X){
     this.type = type;
     this.wishedTime = wishedTime;
-    this.departureTime = 0;
-    this.arrivalTime = 0;
+    this.departureTime = wishedTime;
+    this.arrivalTime = wishedTime;
     this.errorTransit = errorTransit;
     this.errorCar = errorCar;
     this.e = e;
