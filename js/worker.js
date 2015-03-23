@@ -88,6 +88,7 @@ function run(scenario) {
     var nextTimeSlice = null;
     timeSliceArray.unshift(timeSlice);
 
+
     for (i=0; i < totalTimeInterval / timeStep; i++) {
         nextTimeSlice = timeSlice;
         time -= timeStep;
@@ -97,6 +98,7 @@ function run(scenario) {
     }
 
     bottleneck.setTimeSliceArray(timeSliceArray);
+    bottleneck.initializeQueue();
     
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
 
