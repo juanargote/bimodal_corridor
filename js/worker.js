@@ -78,7 +78,6 @@ function run(scenario) {
     // Initialize bottleneck and timeSlices
     var bottleneckCapacity = scenario.N*scenario.e*scenario.L/(scenario.e+scenario.L);
     var bottleneck = new Bottleneck(bottleneckCapacity);
-    bottleneck.setUserArray(userArray);
     
     var timeSliceArray = [];
     var totalTimeInterval = 2*scenario.N / bottleneckCapacity;
@@ -87,7 +86,6 @@ function run(scenario) {
     var timeSlice = new TimeSlice(time);
     var nextTimeSlice = null;
     timeSliceArray.unshift(timeSlice);
-
 
     for (i=0; i < totalTimeInterval / timeStep; i++) {
         nextTimeSlice = timeSlice;
@@ -98,11 +96,14 @@ function run(scenario) {
     }
 
     bottleneck.setTimeSliceArray(timeSliceArray);
+
+    // Set the bottleneck car users
+    bottleneck.setUserArray(userArray.filter(function(d){return d.type == userType.CAR || d.type == userType.CHOICE_CAR}));
     bottleneck.initializeQueue();
     
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
 
-    // Simulate the desicion process between car and transit
+    // Simulate the decision process between car and transit
 
     // Return the results
     return result;
