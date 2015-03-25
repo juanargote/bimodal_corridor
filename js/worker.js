@@ -71,7 +71,7 @@ function run(scenario) {
         var type = getInitialUserType(scenario.alpha,scenario.beta,scenario.initialTransitChoice);
         var errorTransit = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
         var errorCar = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
-        var user = new User(type,scenario.wishedTime,errorTransit,errorCar,scenario.e,scenario.L,scenario.X);
+        var user = new User(i,type,scenario.wishedTime,errorTransit,errorCar,scenario.e,scenario.L,scenario.X);
         userArray.push(user);
     }
 
