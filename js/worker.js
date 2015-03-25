@@ -80,15 +80,16 @@ function run(scenario) {
     var bottleneck = new Bottleneck(bottleneckCapacity);
     
     var timeSliceArray = [];
-    var time = scenario.wishedTime + totalTimeInterval / 2;
-    var timeStep = totalTimeInterval / scenario.N;
+    var totalTimeInterval = 2 * scenario.N / bottleneckCapacity;
+    var timeStep = 2 / bottleneckCapacity;
+    var time = scenario.wishedTime + totalTimeInterval / 2 - timeStep;
     var timeSlice = new TimeSlice(time,timeStep);
     var nextTimeSlice = null;
     timeSliceArray.unshift(timeSlice);
 
-    for (i=0; i < totalTimeInterval / timeStep; i++) {
+    for (i=0; i < totalTimeInterval / timeStep - 1; i++) {
         nextTimeSlice = timeSlice;
-        time -= timeStep;
+        time = strip(time - timeStep);
         var timeSlice = new TimeSlice(time,timeStep);
         timeSlice.setNext(nextTimeSlice);
         timeSliceArray.unshift(timeSlice)
@@ -155,4 +156,13 @@ function getGumbelParameters(mean,variance) {
     params.push(mu);
     params.push(beta);
     return params
+}
+
+/**
+* Avoid rounding errors in javascript
+* @param {Number}
+* @return {Number}
+*/
+function strip(number) {
+    return (parseFloat(number.toPrecision(12)));
 }
