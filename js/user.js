@@ -5,7 +5,8 @@ var userType = Object.freeze({
     CHOICE_TRANSIT:'choiceTransit'
 });
 
-function User(type,wishedTime,errorTransit,errorCar,e,L,X){
+function User(id,type,wishedTime,errorTransit,errorCar,e,L,X){
+    this.id = id;
     this.type = type;
     this.wishedTime = wishedTime;
     this.departureTime = wishedTime;
@@ -16,6 +17,7 @@ function User(type,wishedTime,errorTransit,errorCar,e,L,X){
     this.L = L;
     this.bottleneckCost = 0;
     this.X = X;
+    this.arrivalTimeSliceId = null;
 }
 
 User.prototype = {
@@ -31,6 +33,9 @@ User.prototype = {
     },
     setArrivalTime:function(arrivalTime) {
         this.arrivalTime = arrivalTime;
+    },
+    setArrivalTimeSliceId:function(arrivalTimeSliceId) {
+        this.arrivalTimeSliceId = arrivalTimeSliceId;
     },
     setDepartureTime:function(departureTime) {
         this.departureTime = departureTime;

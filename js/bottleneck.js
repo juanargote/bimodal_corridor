@@ -21,6 +21,7 @@ Bottleneck.prototype = {
             while (this.timeSliceArray[timeSliceIdx].startTime <= this.userArray[userIdx].arrivalTime && 
                 (this.timeSliceArray[timeSliceIdx].endTime > this.userArray[userIdx].arrivalTime)) {
                 this.timeSliceArray[timeSliceIdx].queueUser(this.userArray[userIdx]);
+                this.userArray[userIdx].setArrivalTimeSliceId(timeSliceIdx);
                 userIdx++;
                 if (userIdx >= this.userArray.length) {
                     break;
