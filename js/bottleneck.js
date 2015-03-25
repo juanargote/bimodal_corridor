@@ -19,7 +19,7 @@ Bottleneck.prototype = {
                 break;
             }
             while (this.timeSliceArray[timeSliceIdx].startTime <= this.userArray[userIdx].arrivalTime && 
-                (this.timeSliceArray[timeSliceIdx].endTime >= this.userArray[userIdx].arrivalTime)) {
+                (this.timeSliceArray[timeSliceIdx].endTime > this.userArray[userIdx].arrivalTime)) {
                 this.timeSliceArray[timeSliceIdx].queueUser(this.userArray[userIdx]);
                 userIdx++;
                 if (userIdx >= this.userArray.length) {
