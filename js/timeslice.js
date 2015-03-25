@@ -1,6 +1,7 @@
 function TimeSlice(time,dt) {
     this.startTime = time;
     this.endTime = time + dt;
+    this.timeInterval = dt;
     this.arrivalTime = time;
     this.departureTime = time;
     this.queue = [];
@@ -15,13 +16,35 @@ TimeSlice.prototype = {
     queueUser:function(user) {
         this.queue.push(user);
     },
-    serve:function(bottleneckCapacity) {
-        // Pop out served users from the queue and update 
-        // their attributes (e.g. departure time...)
+    serve:function(numberOfUsers) {
+        if (this.queue.length > 0) {
+            var newArrivalTime = 0;
+            var newDepartureTime = 0;
+            // Pop out served users from the queue and update 
+            // their attributes (e.g. departure time...)
+            for (var i = 0; i<numberOfUsers; i++){
+                var user = this.queue.shift();
+                newArrivalTime += user.arrivalTime;
+                var thisDepartureTime = this.startTime + strip(i * this.timeInterval / numberOfUsers)
+                newDepartureTime += thisDepartureTime;
+                user.departureTime = thisDepartureTime;
+                // Check if there are more users left to be served
+                if (this.queue.length == 0) {
+                    break;
+                }
+            }
 
-        // Update the queue on the next time slice 
-        // by prepending the unserved users
+            // Update the queue on the next time slice 
+            // by prepending the unserved users
+            if (this.next != null) {
+                this.next.queue = this.queue.concat(this.next.queue);
+            }
 
+            // Update the time slice properties
+            this.arrivalTime = newArrivalTime / numberOfUsers;
+            this.departureTime = newDepartureTime / numberOfUsers;
+        }
+        
     }
 }
 

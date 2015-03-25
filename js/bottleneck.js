@@ -28,6 +28,19 @@ Bottleneck.prototype = {
                 }
             }
         }
+    },
+    emptyQueue: function() {
+        for (var timeSliceIdx = 0; timeSliceIdx < this.timeSliceArray.length; timeSliceIdx++) {
+            this.timeSliceArray[timeSliceIdx].queue = [];
+        }
+    },
+    serveQueue: function() {
+        var leftCapacity = this.capacity;
+        for (var i = 0; i < this.timeSliceArray.length; i++) {
+            var usersToServe = strip(Math.floor(leftCapacity * this.timeSliceArray[i].timeInterval));
+            this.timeSliceArray[i].serve(usersToServe);
+            leftCapacity += strip((leftCapacity * this.timeSliceArray[i].timeInterval - usersToServe) / this.timeSliceArray[i].timeInterval);
+        }
     }
 }
 
