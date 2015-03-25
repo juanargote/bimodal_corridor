@@ -25,3 +25,11 @@ TimeSlice.prototype = {
     }
 }
 
+/**
+* Avoid rounding errors in javascript
+* @param {Number}
+* @return {Number}
+*/
+function strip(number) {
+    return (parseFloat(number.toPrecision(12)));
+}
