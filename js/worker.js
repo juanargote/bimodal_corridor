@@ -100,8 +100,12 @@ function run(scenario) {
     // Set the bottleneck car users
     bottleneck.setUserArray(userArray.filter(function(d){return d.type == userType.CAR || d.type == userType.CHOICE_CAR}));
     bottleneck.initializeQueue();
-    
+    reportInitialUserArray(bottleneck);
+
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
+    bottleneck.serveQueue();   
+    reportUserEquilibrium(bottleneck);
+    bottleneck.chooseArrival(0.2);
 
     // Simulate the decision process between car and transit
 
@@ -131,6 +135,28 @@ function getInitialUserType(alpha,beta,initialTransitChoice) {
     } else {
         throw new Error('getInitialUserType(): The sum of the arguments must be between 0 and 1.');
     }
+}
+
+/**
+* Broadcast the initial user array layout.
+* @param {Object} Bottleneck 
+*/
+function reportInitialUserArray(bottleneck){
+    workerPost({
+        type: 'initialUserArray',
+        value: bottleneck.userArray
+    })
+}
+
+/**
+* Broadcast a user equilibrium to the simulation.
+* @param {Object} Bottleneck
+*/
+function reportUserEquilibrium(bottleneck){
+    workerPost({
+        type: 'userEquilibrium',
+        value: bottleneck.userArray
+    })
 }
 
 /**

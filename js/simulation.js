@@ -6,7 +6,7 @@ Define the simulation scenarios.
 */
 scenarios.push({
     name: "Initial Scenario",
-    N: 1000,
+    N: 50,
     alpha: 0,
     beta: 0,
     initialTransitChoice:0,
@@ -22,16 +22,21 @@ console.table(scenarios)
 scenarios.forEach(function(d,i,a) {
     var worker = new Worker('js/worker.js');
     worker.addEventListener('message', function(e) {
-        test = e.data
+        test = e.data;
         switch (e.data.type) {
             case 'progress':
-                d3.select('#simulation-log').append('p').html(d.name + ': ' + e.data.value)
-                console.log(e.data.value)
+                d3.select('#simulation-log').append('p').html(d.name + ': ' + e.data.value);
+                break;
+            case 'initialUserArray':
+                initialUserVisualization(e.data.value);
+                break;
+            case 'userEquilibrium':
+                updateUserVisualization(e.data.value);
                 break;
             case 'result':
                 results.push(e.data.value)
                 if (results.length == scenarios.length) {
-                    VisualizeResults(results);
+                    console.log('All scenarios were simulated.');
                 }
                 break;
         }
