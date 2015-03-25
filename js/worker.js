@@ -80,7 +80,6 @@ function run(scenario) {
     var bottleneck = new Bottleneck(bottleneckCapacity);
     
     var timeSliceArray = [];
-    var totalTimeInterval = 2*scenario.N / bottleneckCapacity;
     var time = scenario.wishedTime + totalTimeInterval / 2;
     var timeStep = totalTimeInterval / scenario.N;
     var timeSlice = new TimeSlice(time,timeStep);
