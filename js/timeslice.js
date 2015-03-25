@@ -1,7 +1,8 @@
-function TimeSlice(time) {
-    this.time = time;
-    this.arrivalTime = 0;
-    this.departureTime = 0;
+function TimeSlice(time,dt) {
+    this.startTime = time;
+    this.endTime = time + dt;
+    this.arrivalTime = time;
+    this.departureTime = time;
     this.queue = [];
     this.next = null;
 }

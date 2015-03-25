@@ -83,14 +83,14 @@ function run(scenario) {
     var totalTimeInterval = 2*scenario.N / bottleneckCapacity;
     var time = scenario.wishedTime + totalTimeInterval / 2;
     var timeStep = totalTimeInterval / scenario.N;
-    var timeSlice = new TimeSlice(time);
+    var timeSlice = new TimeSlice(time,timeStep);
     var nextTimeSlice = null;
     timeSliceArray.unshift(timeSlice);
 
     for (i=0; i < totalTimeInterval / timeStep; i++) {
         nextTimeSlice = timeSlice;
         time -= timeStep;
-        var timeSlice = new TimeSlice(time);
+        var timeSlice = new TimeSlice(time,timeStep);
         timeSlice.setNext(nextTimeSlice);
         timeSliceArray.unshift(timeSlice)
     }

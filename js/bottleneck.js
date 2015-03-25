@@ -18,8 +18,8 @@ Bottleneck.prototype = {
             if (userIdx >= this.userArray.length) {
                 break;
             }
-            while (this.timeSliceArray[timeSliceIdx].time <= this.userArray[userIdx].arrivalTime && 
-                (this.timeSliceArray[timeSliceIdx].next == null || this.timeSliceArray[timeSliceIdx].next.time >= this.userArray[userIdx].arrivalTime)) {
+            while (this.timeSliceArray[timeSliceIdx].startTime <= this.userArray[userIdx].arrivalTime && 
+                (this.timeSliceArray[timeSliceIdx].endTime >= this.userArray[userIdx].arrivalTime)) {
                 this.timeSliceArray[timeSliceIdx].queueUser(this.userArray[userIdx]);
                 userIdx++;
                 if (userIdx >= this.userArray.length) {
