@@ -41,6 +41,11 @@ Bottleneck.prototype = {
             this.timeSliceArray[i].serve(usersToServe);
             leftCapacity += strip((leftCapacity * this.timeSliceArray[i].timeInterval - usersToServe) / this.timeSliceArray[i].timeInterval);
         }
+    },
+    generateTimeSliceCostArray: function() {
+        return this.timeSliceArray.map(function(d){
+            return d.departureTime - d.arrivalTime;
+        })
     }
 }
 
