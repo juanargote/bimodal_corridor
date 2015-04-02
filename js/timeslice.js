@@ -43,8 +43,10 @@ TimeSlice.prototype = {
             // Update the time slice properties
             this.arrivalTime = newArrivalTime / numberOfUsers;
             this.departureTime = newDepartureTime / numberOfUsers;
+        } else {
+            this.arrivalTime = this.startTime;
+            this.departureTime = this.startTime;
         }
-        
     }
 }
 
