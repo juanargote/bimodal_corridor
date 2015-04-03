@@ -56,16 +56,20 @@ User.prototype = {
 
         // Determine the user's minimum cost
         var self = this;
+        var change = 0;
         var costArray = bottleneck.timeSliceArray.map(function(d){
             return (d.departureTime - d.arrivalTime) + self.punctualityCost(d.departureTime - self.wishedTime);
         }); 
-        console.log(costArray)   
-        var minCostIndex = minIndex(costArray);
 
         var minCostIndex = minIndex(costArray);
+        if (minCostIndex != this.arrivalIndex) {
+            change = 1;
+        }
+        
         // Update the user's arrival time
         this.arrivalTime = bottleneck.timeSliceArray[minCostIndex].startTime;
 
+        return change;
         /**
         * User with constrained choice. The user only considers arrival times
         * in the vecinity of its current choice.

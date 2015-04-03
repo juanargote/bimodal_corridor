@@ -30,8 +30,11 @@ scenarios.forEach(function(d,i,a) {
             case 'initialUserArray':
                 initialUserVisualization(e.data.value);
                 break;
-            case 'userEquilibrium':
-                updateUserVisualization(e.data.value);
+            case 'userBottleneckEquilibrium':
+                updateUserBottleneckVisualization(e.data.value);
+                break;
+            case 'userArrivalEquilibrium':
+                updateUserArrivalVisualization(e.data.value);
                 break;
             case 'result':
                 results.push(e.data.value)

@@ -104,9 +104,10 @@ function run(scenario) {
 
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
     bottleneck.serveQueue();   
-    reportUserEquilibrium(bottleneck);
+    reportUserBottleneckEquilibrium(bottleneck);
     bottleneck.chooseArrival(0.1);
-    reportUserEquilibrium(bottleneck);
+    bottleneck.sortArrivalIndex();
+    reportUserArrivalEquilibrium(bottleneck);
 
     // Simulate the decision process between car and transit
 
@@ -150,12 +151,23 @@ function reportInitialUserArray(bottleneck){
 }
 
 /**
-* Broadcast a user equilibrium to the simulation.
+* Broadcast a user-bottleneck equilibrium to the simulation.
 * @param {Object} Bottleneck
 */
-function reportUserEquilibrium(bottleneck){
+function reportUserBottleneckEquilibrium(bottleneck){
     workerPost({
-        type: 'userEquilibrium',
+        type: 'userBottleneckEquilibrium',
+        value: bottleneck.userArray
+    })
+}
+
+/**
+* Broadcast a user-arrival equilibrium to the simulation.
+* @param {Object} Bottleneck
+*/
+function reportUserArrivalEquilibrium(bottleneck){
+    workerPost({
+        type: 'userArrivalEquilibrium',
         value: bottleneck.userArray
     })
 }

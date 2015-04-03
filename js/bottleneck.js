@@ -48,6 +48,12 @@ Bottleneck.prototype = {
             usersToChoose[i].chooseArrival(this);
         }
         return 
+    },
+    sortArrivalIndex: function(){
+        this.userArray.sort(compareArrivalTime);
+        for (var i = 0; i < this.userArray.length; i++) {
+            this.userArray[i].setArrivalIndex(i);
+        }
     }
 }
 
@@ -58,4 +64,20 @@ Bottleneck.prototype = {
 */
 function strip(number) {
     return (parseFloat(number.toPrecision(12)));
+}
+
+/**
+* Compare arrivalTime to sort by it
+* @param {User} a
+* @param {User} b
+* @return {Number}
+*/
+function compareArrivalTime(a,b) {
+    if (a.arrivalTime < b.arrivalTime) {
+        return -1;
+    }
+    if (a.arrivalTime > b.arrivalTime) {
+        return 1;
+    }
+    return 0;
 }

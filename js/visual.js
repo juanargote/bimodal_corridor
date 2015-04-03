@@ -73,7 +73,7 @@ function initialUserVisualization(userArray){
             .attr("class", "arrival")
             .attr("r", 3.5)
             .attr("cx", function(d) { return x(d.arrivalTime); })
-            .attr("cy", function(d) { return y(d.id); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); })
             .style("fill", function(d) { return color(1); });
 
     svg.selectAll(".departure")
@@ -82,7 +82,7 @@ function initialUserVisualization(userArray){
             .attr("class", "departure")
             .attr("r", 3.5)
             .attr("cx", function(d) { return x(d.departureTime); })
-            .attr("cy", function(d) { return y(d.id); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); })
             .style("fill", function(d) { return color(2); });
 
     // var legend = svg.selectAll(".legend")
@@ -106,44 +106,63 @@ function initialUserVisualization(userArray){
 }
 
 /**
+* Update the user visualization after reaching a bottleneck equilibrium.
+* @param {Array} userArray
+*/
+function updateUserBottleneckVisualization(userArray){
+    var svg = d3.select("#main svg");
+    var departures = svg.selectAll(".departure")
+        .data(userArray,function(d){return d.id});
+
+    departures.enter().append("circle")
+            .attr("class", "departure")
+            .attr("r", 3.5)
+            .attr("cx", function(d) { return x(d.departureTime); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); })
+            .style("fill", function(d) { return color(2); });
+
+    departures.transition(2500)
+            .attr("cx", function(d) { return x(d.departureTime); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); });
+
+    departures.exit().transition(2500)
+            .remove();
+}
+
+/**
 * Update the user visualization.
 * @param {Array} userArray
 */
-function updateUserVisualization(userArray){
-    console.log(userArray.map(function(d){return d.departureTime}))
+function updateUserArrivalVisualization(userArray){
     var svg = d3.select("#main svg");
     var arrivals = svg.selectAll(".arrival")
         .data(userArray,function(d){return d.id});
-    var departures = svg.selectAll(".departure")
+    var wishedTimes = svg.selectAll(".wished")
         .data(userArray,function(d){return d.id});
 
     arrivals.enter().append("circle")
             .attr("class", "arrival")
             .attr("r", 3.5)
             .attr("cx", function(d) { return x(d.arrivalTime); })
-            .attr("cy", function(d) { return y(d.id); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); })
             .style("fill", function(d) { return color(1); });
 
-    arrivals.transition(500)
-            .attr("cx", function(d) { return x(d.arrivalTime); });
+    arrivals.transition(2500)
+            .attr("cx", function(d) { return x(d.arrivalTime); })
+            .attr("cy", function(d) { return y(d.arrivalIndex); });
 
-    arrivals.exit().transition(500)
+    arrivals.exit().transition(2500)
             .remove();
 
-    console.log(departures)
-    console.log(departures.enter())
-    console.log(departures.exit())
-    departures.enter().append("circle")
-            .attr("class", "departure")
+    wishedTimes.enter().append("circle")
+            .attr("class", "wished")
             .attr("r", 3.5)
-            .attr("cx", function(d) { return x(d.departureTime); })
-            .attr("cy", function(d) { return y(d.id); })
-            .style("fill", function(d) { return color(2); });
+            .attr("cy", function(d) { return y(d.arrivalIndex); })
+            .style("fill", function(d) { return color(0); });
 
-    departures.transition(1000)
-            .attr("cx", function(d) { return x(d.departureTime); });
+    wishedTimes.transition(2500)
+            .attr("cy", function(d) { return y(d.arrivalIndex); });
 
-    departures.exit().transition(1000)
+    wishedTimes.exit().transition(2500)
             .remove();
-
 }
