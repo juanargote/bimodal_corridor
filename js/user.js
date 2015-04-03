@@ -7,6 +7,7 @@ var userType = Object.freeze({
 
 function User(id,type,wishedTime,errorTransit,errorCar,e,L,X){
     this.id = id;
+    this.arrivalIndex = id;
     this.type = type;
     this.wishedTime = wishedTime;
     this.departureTime = wishedTime;
@@ -43,6 +44,9 @@ User.prototype = {
     setbottleneckCost:function(bottleneckCost) {
         this.bottleneckCost = bottleneckCost;
     },
+    setArrivalIndex:function(arrivalIndex){
+        this.arrivalIndex = arrivalIndex;
+    },
     chooseArrival:function(bottleneck) {
         
         /**
@@ -58,6 +62,7 @@ User.prototype = {
         console.log(costArray)   
         var minCostIndex = minIndex(costArray);
 
+        var minCostIndex = minIndex(costArray);
         // Update the user's arrival time
         this.arrivalTime = bottleneck.timeSliceArray[minCostIndex].startTime;
 
