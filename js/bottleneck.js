@@ -42,10 +42,12 @@ Bottleneck.prototype = {
             leftCapacity += strip((leftCapacity * this.timeSliceArray[i].timeInterval - usersToServe) / this.timeSliceArray[i].timeInterval);
         }
     },
-    generateTimeSliceCostArray: function() {
-        return this.timeSliceArray.map(function(d){
-            return d.departureTime - d.arrivalTime;
-        })
+    chooseArrival: function(p) {
+        var usersToChoose = this.userArray.filter(function(d){return Math.random() < p});
+        for (var i = 0; i < usersToChoose.length; i++) {
+            usersToChoose[i].chooseArrival(this);
+        }
+        return 
     }
 }
 

@@ -42,5 +42,62 @@ User.prototype = {
     },
     setbottleneckCost:function(bottleneckCost) {
         this.bottleneckCost = bottleneckCost;
+    },
+    chooseArrival:function(bottleneck) {
+        
+        /**
+        * User with perfect information. The user knows the cost associated with
+        * all possible arrival times and chooses accordingly.
+        */
+
+        // Determine the user's minimum cost
+        var self = this;
+        var costArray = bottleneck.timeSliceArray.map(function(d){
+            return (d.departureTime - d.arrivalTime) + self.punctualityCost(d.departureTime - self.wishedTime);
+        }); 
+        console.log(costArray)   
+        var minCostIndex = minIndex(costArray);
+
+        // Update the user's arrival time
+        this.arrivalTime = bottleneck.timeSliceArray[minCostIndex].startTime;
+
+        /**
+        * User with constrained choice. The user only considers arrival times
+        * in the vecinity of its current choice.
+        */
+        // var currentCost = this.departureTime - this.arrivalTime + this.punctualityCost(this.departureTime - this.wishedTime)
+
+        // // Look at arriving n time units earlier
+        
+        // // Look at arriving n time units later
+
+    },
+    punctualityCost:function(delay) {
+        if (delay >= 0) {
+            return this.L * delay;
+        } else {
+            return this.e * (-delay);
+        }
+    },
+    computeCostArrivingAtTimeSlice:function(timeSlice){
+        return timeSlice.departureTime - timeSlice.arrivalTime + this.punctualityCost(timeSlice.departureTime - this.wishedTime);
     }
+}
+
+/**
+* Return the index of an array's minimum value
+* @param {Array} array
+* @return {Number} minIndex
+*/
+function minIndex(array) {
+    var min = array[0];
+    var minIndex = 0;
+
+    for (var i = 1; i < array.length; i++) {
+        if (array[i] < min) {
+            minIndex = i;
+            min = array[i];
+        }
+    }
+    return minIndex
 }

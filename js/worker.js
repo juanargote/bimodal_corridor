@@ -105,7 +105,8 @@ function run(scenario) {
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
     bottleneck.serveQueue();   
     reportUserEquilibrium(bottleneck);
-    bottleneck.chooseArrival(0.2);
+    bottleneck.chooseArrival(0.1);
+    reportUserEquilibrium(bottleneck);
 
     // Simulate the decision process between car and transit
 
