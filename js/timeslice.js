@@ -35,9 +35,10 @@ TimeSlice.prototype = {
             }
 
             // Update the queue on the next time slice 
-            // by prepending the unserved users
+            // by prepending the unserved users and removing them from the current queue
             if (this.next != null) {
                 this.next.queue = this.queue.concat(this.next.queue);
+                this.queue = [];
             }
 
             // Update the time slice properties
