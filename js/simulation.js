@@ -6,7 +6,7 @@ Define the simulation scenarios.
 */
 scenarios.push({
     name: "Initial Scenario",
-    N: 50,
+    N: 1000,
     alpha: 0,
     beta: 0,
     initialTransitChoice:0,
