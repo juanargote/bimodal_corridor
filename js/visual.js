@@ -106,6 +106,41 @@ function initialUserVisualization(userArray){
 }
 
 /**
+* Plot the expected user equilibrium under step wished curve.
+* @param {Array} userArray
+* @param {Number} capacity
+*/
+function visualizeExpectedEquilibrium(userArray,capacity){
+    var line = d3.svg.line()
+                .x(function(d){return x(d.x)})
+                .y(function(d){return y(d.y)})
+
+    var svg = d3.select("#main svg").select("g");
+
+    var N = userArray.length;
+    var e = userArray[0].e;
+    var L = userArray[0].L;
+    var TC = strip(N*e*L / (capacity * (e + L)));
+    var NL = N*L/(e+L);
+    var w = userArray[0].wishedTime;
+
+    svg.append("path")
+        .datum([{x:strip(w - NL / capacity),y:0},
+            {x:w - TC,y:NL},
+            {x:strip(w + (N - NL) / capacity),y:N}])
+        .attr("class","line")
+        .attr("id","expected-arrival")
+        .attr("d",line)
+
+    svg.append("path")
+        .datum([{x:strip(w - NL / capacity),y:0},
+            {x:strip(w + (N - NL) / capacity),y:N}])
+        .attr("class","line")
+        .attr("id","expected-departure")
+        .attr("d",line)    
+}
+
+/**
 * Update the user visualization after reaching a bottleneck equilibrium.
 * @param {Array} userArray
 */

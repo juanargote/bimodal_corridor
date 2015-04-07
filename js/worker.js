@@ -100,6 +100,7 @@ function run(scenario) {
 
     // Set the bottleneck car users
     bottleneck.setUserArray(userArray.filter(function(d){return d.type == userType.CAR || d.type == userType.CHOICE_CAR}));
+    bottleneck.setOptimalArrival();
     bottleneck.initializeQueue();
     reportInitialUserArray(bottleneck);
 
@@ -147,7 +148,7 @@ function getInitialUserType(alpha,beta,initialTransitChoice) {
 function reportInitialUserArray(bottleneck){
     workerPost({
         type: 'initialUserArray',
-        value: bottleneck.userArray
+        value: bottleneck
     })
 }
 

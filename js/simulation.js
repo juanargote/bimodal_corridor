@@ -28,7 +28,8 @@ scenarios.forEach(function(d,i,a) {
                 d3.select('#simulation-log').append('p').html(d.name + ': ' + e.data.value);
                 break;
             case 'initialUserArray':
-                initialUserVisualization(e.data.value);
+                initialUserVisualization(e.data.value.userArray);
+                visualizeExpectedEquilibrium(e.data.value.userArray,e.data.value.capacity);
                 break;
             case 'userBottleneckEquilibrium':
                 updateUserBottleneckVisualization(e.data.value);
