@@ -64,6 +64,10 @@ function run(scenario) {
 
     // Initialize the scenario components: users - timeSlice - bottleneck
 
+    // Initialize bottleneck 
+    var bottleneckCapacity = scenario.N*scenario.e*scenario.L/(scenario.e+scenario.L);
+    var bottleneck = new Bottleneck(bottleneckCapacity);
+
     // Initialize users
     var userArray = [];
     var gumbelParameters = getGumbelParameters(0,1);
@@ -71,14 +75,11 @@ function run(scenario) {
         var type = getInitialUserType(scenario.alpha,scenario.beta,scenario.initialTransitChoice);
         var errorTransit = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
         var errorCar = gumbelRandom(gumbelParameters[0],gumbelParameters[1]);
-        var user = new User(i,type,scenario.wishedTime,errorTransit,errorCar,scenario.e,scenario.L,scenario.X);
+        var user = new User(i,type,scenario.wishedTime,errorTransit,errorCar,scenario.e,scenario.L,scenario.X,bottleneckCapacity);
         userArray.push(user);
     }
-
-    // Initialize bottleneck and timeSlices
-    var bottleneckCapacity = scenario.N*scenario.e*scenario.L/(scenario.e+scenario.L);
-    var bottleneck = new Bottleneck(bottleneckCapacity);
     
+    // Initialize timeSlices
     var timeSliceArray = [];
     var totalTimeInterval = 2 * scenario.N / bottleneckCapacity;
     var timeStep = 2 / bottleneckCapacity;

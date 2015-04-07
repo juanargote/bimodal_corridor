@@ -5,7 +5,7 @@ var userType = Object.freeze({
     CHOICE_TRANSIT:'choiceTransit'
 });
 
-function User(id,type,wishedTime,errorTransit,errorCar,e,L,X){
+function User(id,type,wishedTime,errorTransit,errorCar,e,L,X,capacity){
     this.id = id;
     this.arrivalIndex = id;
     this.type = type;
@@ -19,6 +19,8 @@ function User(id,type,wishedTime,errorTransit,errorCar,e,L,X){
     this.bottleneckCost = 0;
     this.X = X;
     this.arrivalTimeSliceId = null;
+    this.work = 1 / capacity; // in time units
+    this.workLeft = 1 / capacity;
 }
 
 User.prototype = {
@@ -47,6 +49,9 @@ User.prototype = {
     setArrivalIndex:function(arrivalIndex){
         this.arrivalIndex = arrivalIndex;
     },
+    resetWorkLeft:function() {
+        this.workLeft = this.work;
+    },
     chooseArrival:function(bottleneck) {
         
         /**
@@ -58,14 +63,14 @@ User.prototype = {
         var self = this;
         var change = 0;
         var costArray = bottleneck.timeSliceArray.map(function(d){
-            return (d.departureTime - d.arrivalTime) + self.punctualityCost(d.departureTime - self.wishedTime);
+            return d.delay + self.punctualityCost(d.departureTime - self.wishedTime);
         }); 
 
         var minCostIndex = minIndex(costArray);
         if (minCostIndex != this.arrivalIndex) {
             change = 1;
         }
-        
+
         // Update the user's arrival time
         this.arrivalTime = bottleneck.timeSliceArray[minCostIndex].startTime;
 
@@ -89,7 +94,7 @@ User.prototype = {
         }
     },
     computeCostArrivingAtTimeSlice:function(timeSlice){
-        return timeSlice.departureTime - timeSlice.arrivalTime + this.punctualityCost(timeSlice.departureTime - this.wishedTime);
+        return strip(timeSlice.departureTime - timeSlice.arrivalTime + this.punctualityCost(timeSlice.departureTime - this.wishedTime));
     }
 }
 

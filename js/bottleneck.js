@@ -35,19 +35,18 @@ Bottleneck.prototype = {
         }
     },
     serveQueue: function() {
-        var leftCapacity = this.capacity;
+        this.userArray.forEach(function(d){d.resetWorkLeft();})
         for (var i = 0; i < this.timeSliceArray.length; i++) {
-            var usersToServe = strip(Math.floor(leftCapacity * this.timeSliceArray[i].timeInterval));
-            this.timeSliceArray[i].serve(usersToServe);
-            leftCapacity += strip((leftCapacity * this.timeSliceArray[i].timeInterval - usersToServe) / this.timeSliceArray[i].timeInterval);
+            this.timeSliceArray[i].serve(this.capacity);
         }
     },
     chooseArrival: function(p) {
         var usersToChoose = this.userArray.filter(function(d){return Math.random() < p});
+        var usersChanging = 0;
         for (var i = 0; i < usersToChoose.length; i++) {
-            usersToChoose[i].chooseArrival(this);
+            usersChanging += usersToChoose[i].chooseArrival(this);
         }
-        return 
+        return usersChanging;
     },
     sortArrivalIndex: function(){
         this.userArray.sort(compareArrivalTime);
