@@ -108,9 +108,36 @@ function run(scenario) {
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
     bottleneck.serveQueue();   
     reportUserBottleneckEquilibrium(bottleneck);
-    bottleneck.chooseArrival(0.1);
+    var p_init = 0.05;
+    var usersChanging = bottleneck.chooseArrival(p_init);
     bottleneck.sortArrivalIndex();
     reportUserArrivalEquilibrium(bottleneck);
+
+    var vizidx = 1;
+    // while (usersChanging > 1) {
+    var nRuns = 2;
+    for (var j = 0; j < nRuns; j++) {
+
+        // Reinitialize the queue
+        bottleneck.initializeQueue();
+
+        // Serve the queue, compute the costs, and update the viz
+        bottleneck.serveQueue();
+        if (vizidx % 1 == 0) {
+            reportUserBottleneckEquilibrium(bottleneck);
+        }
+
+        // Reselect arrival and update the viz
+        usersChanging = bottleneck.chooseArrival(p);
+        console.log(usersChanging)
+        bottleneck.sortArrivalIndex();
+        if (vizidx % 2 == 0) {
+            // reportUserArrivalEquilibrium(bottleneck);
+        }
+        vizidx += 1;
+        var p = strip(p_init * (nRuns - j) / nRuns)
+    }
+
 
     // Simulate the decision process between car and transit
 
