@@ -33,8 +33,8 @@ function initialUserVisualization(userArray){
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      x.domain([-2,4]).nice();
-      y.domain([0,userArray.length]).nice();
+    x.domain([-2,4]).nice();
+    y.domain([0,userArray.length]).nice();
 
     svg.append("g")
         .attr("class", "x axis")
