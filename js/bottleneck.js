@@ -53,6 +53,91 @@ Bottleneck.prototype = {
         for (var i = 0; i < this.userArray.length; i++) {
             this.userArray[i].setArrivalIndex(i);
         }
+    },
+    computeCost: function(){
+        /**
+        * Iterative function to assign delays to timeslices
+        */
+        var timeSliceIndex = 0;
+
+        // Assign 0 costs at the initial and final timeSlices
+        // Note that this method requires a sorted userArray by arrival time
+        for (var j = 0; j < this.timeSliceArray.length; j++) {
+            if (this.timeSliceArray[j].startTime < this.userArray[0].arrivalTime) {
+                this.timeSliceArray[j].setDelay(0);
+                timeSliceIndex++;
+            } else {
+                break;
+            }
+        }
+
+        for (var j = this.timeSliceArray.length-1; j >= 0; j--) {
+            if (this.userArray[this.userArray.length-1].departureTime <= this.timeSliceArray[j].startTime) {
+                this.timeSliceArray[j].setDelay(0);
+            } else {
+                break;
+            }
+        }
+
+        // Iterative delay assignment
+        var userIndex = 0;
+        var firstUserFromArrivalBatch = this.userArray[userIndex];
+        var lastUserFromArrivalBatch = this.userArray[userIndex];
+        while (timeSliceIndex < this.timeSliceArray.length - 1 && this.timeSliceArray[timeSliceIndex].startTime < this.userArray[this.userArray.length - 1].departureTime ) {
+
+            if (userIndex >= this.userArray.length - 1) {
+                var timeSliceDelay = this.delayCalculation(lastUserFromArrivalBatch,this.timeSliceArray[timeSliceIndex]);
+                this.timeSliceArray[timeSliceIndex].setDelay(timeSliceDelay);    
+                timeSliceIndex++;
+            } else {
+                if (this.timeSliceArray[timeSliceIndex].startTime >= firstUserFromArrivalBatch.arrivalTime) { 
+                    if (firstUserFromArrivalBatch.arrivalTime == this.userArray[userIndex + 1].arrivalTime) {
+                        lastUserFromArrivalBatch = this.userArray[userIndex+1];
+                    } else {
+                        firstUserFromArrivalBatch = this.userArray[userIndex+1];
+                    }
+                    userIndex++;
+                } else {
+                    var timeSliceDelay = this.delayCalculation(lastUserFromArrivalBatch,this.timeSliceArray[timeSliceIndex]);
+                    this.timeSliceArray[timeSliceIndex].setDelay(timeSliceDelay);    
+                    timeSliceIndex++;
+                    if (this.timeSliceArray[timeSliceIndex].startTime >= firstUserFromArrivalBatch.arrivalTime) {
+                        lastUserFromArrivalBatch = this.userArray[userIndex];
+                    }
+                } 
+            }
+        }
+    },
+    delayCalculation: function(user,timeSlice) {
+        if (user.departureTime <= timeSlice.startTime) {
+            return 0;
+        } else {
+            return strip(user.departureTime - timeSlice.startTime);
+        }
+    },
+    setOptimalArrival:function() {
+        var N = this.userArray.length;
+        var e = this.userArray[0].e;
+        var L = this.userArray[0].L;
+        var TC = strip(N*e*L / (this.capacity * (e + L)));
+        var NL = N*L/(e+L);
+        var w = this.userArray[0].wishedTime;
+        console.log(N);
+        console.log(e);
+        console.log(L);
+        console.log(TC);
+        console.log(NL);
+        console.log(w);
+
+        for (var i = 0; i < this.userArray.length; i++) {
+            if (this.userArray[i].arrivalIndex <= NL) {
+                var arrivalTime = this.userArray[i].wishedTime - TC - strip((NL - this.userArray[i].arrivalIndex) / (this.capacity / (1 - e)))
+            } else {
+                var arrivalTime = this.userArray[i].wishedTime - TC + strip((this.userArray[i].arrivalIndex - NL) / (this.capacity / (1 + L)))
+            }
+            console.log(arrivalTime)
+            this.userArray[i].setArrivalTime(arrivalTime);
+        }
     }
 }
 
