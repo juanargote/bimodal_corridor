@@ -44,7 +44,8 @@ Bottleneck.prototype = {
         var usersToChoose = this.userArray.filter(function(d){return Math.random() < p});
         var usersChanging = 0;
         for (var i = 0; i < usersToChoose.length; i++) {
-            usersChanging += usersToChoose[i].chooseArrival(this);
+            // usersChanging += usersToChoose[i].chooseArrival(this);
+            usersChanging += usersToChoose[i].chooseCloseArrival(this);
         }
         return usersChanging;
     },

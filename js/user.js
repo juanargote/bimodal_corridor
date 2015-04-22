@@ -75,16 +75,57 @@ User.prototype = {
         this.arrivalTime = bottleneck.timeSliceArray[minCostIndex].startTime;
 
         return change;
+    },
+    chooseCloseArrival:function(bottleneck){
         /**
         * User with constrained choice. The user only considers arrival times
         * in the vecinity of its current choice.
         */
-        // var currentCost = this.departureTime - this.arrivalTime + this.punctualityCost(this.departureTime - this.wishedTime)
+
+        // Determine the cost array
+        var self = this;
+        var change = 0;
+        var costArray = bottleneck.timeSliceArray.map(function(d){
+            return d.delay + self.punctualityCost(d.departureTime - self.wishedTime);
+        }); 
+
+        var lessCostIndex = this.arrivalTimeIndex;
+        var currentCost = costArray[this.arrivalTimeIndex]
 
         // // Look at arriving n time units earlier
-        
-        // // Look at arriving n time units later
+        for (var i = 1; i < 6; i++){
+            try {
+                var cost = costArray[this.arrivalTimeIndex + i];
+                if (cost < currentCost) {
+                    currentCost = cost;
+                    lessCostIndex = this.arrivalTimeIndex + i;
+                }
+            } catch (e) {
+                // console.log('Looking past end time')
+            }
+        }
 
+        // // Look at arriving n time units later
+        for (var i = 1; i < 6; i++){
+            try {
+                var cost = costArray[this.arrivalTimeIndex - i];
+                if (cost < currentCost) {
+                    currentCost = cost;
+                    lessCostIndex = this.arrivalTimeIndex - i;
+                }
+            } catch (e) {
+                // console.log('Looking past initial time')
+            }
+        }   
+
+        if (lessCostIndex != this.arrivalTimeIndex){
+            change = 1;
+        }
+
+        // Update the user's arrival time
+        this.arrivalTime = bottleneck.timeSliceArray[lessCostIndex].startTime;
+
+        return change;
     },
     punctualityCost:function(delay) {
         if (delay >= 0) {

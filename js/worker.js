@@ -102,21 +102,21 @@ function run(scenario) {
 
     // Set the bottleneck car users
     bottleneck.setUserArray(userArray.filter(function(d){return d.type == userType.CAR || d.type == userType.CHOICE_CAR}));
-    bottleneck.setOptimalArrival();
+    // bottleneck.setOptimalArrival();
     bottleneck.initializeQueue();
     reportInitialUserArray(bottleneck);
 
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
     bottleneck.serveQueue();   
     reportUserBottleneckEquilibrium(bottleneck);
-    var p_init = 0.05;
+    var p_init = 0.1;
     var usersChanging = bottleneck.chooseArrival(p_init);
     bottleneck.sortArrivalIndex();
     reportUserArrivalEquilibrium(bottleneck);
 
     var vizidx = 1;
     // while (usersChanging > 1) {
-    var nRuns = 2;
+    var nRuns = 5000;
     for (var j = 0; j < nRuns; j++) {
 
         // Reinitialize the queue
@@ -124,7 +124,7 @@ function run(scenario) {
 
         // Serve the queue, compute the costs, and update the viz
         bottleneck.serveQueue();
-        if (vizidx % 1 == 0) {
+        if (vizidx % 15 == 0) {
             reportUserBottleneckEquilibrium(bottleneck);
         }
 
