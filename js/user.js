@@ -18,7 +18,7 @@ function User(id,type,wishedTime,errorTransit,errorCar,e,L,X,capacity){
     this.L = L;
     this.bottleneckCost = 0;
     this.X = X;
-    this.arrivalTimeSliceId = null;
+    this.arrivalTimeIndex = null;
     this.work = 1 / capacity; // in time units
     this.workLeft = 1 / capacity;
 }
@@ -37,8 +37,8 @@ User.prototype = {
     setArrivalTime:function(arrivalTime) {
         this.arrivalTime = arrivalTime;
     },
-    setArrivalTimeSliceId:function(arrivalTimeSliceId) {
-        this.arrivalTimeSliceId = arrivalTimeSliceId;
+    setArrivalTimeIndex:function(arrivalTimeIndex) {
+        this.arrivalTimeIndex = arrivalTimeIndex;
     },
     setDepartureTime:function(departureTime) {
         this.departureTime = departureTime;
@@ -67,7 +67,7 @@ User.prototype = {
         }); 
 
         var minCostIndex = minIndex(costArray);
-        if (minCostIndex != this.arrivalIndex) {
+        if (minCostIndex != this.arrivalTimeIndex) {
             change = 1;
         }
 

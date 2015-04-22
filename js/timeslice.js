@@ -3,6 +3,7 @@ function TimeSlice(time,dt) {
     this.endTime = time + dt;
     this.timeInterval = dt;
     this.arrivalTime = time;
+    this.arrivalTimeIndex = null;
     this.departureTime = time;
     this.queue = [];
     this.next = null;
@@ -11,6 +12,9 @@ function TimeSlice(time,dt) {
 
 TimeSlice.prototype = {
     constructor:TimeSlice,
+    setArrivalTimeIndex:function(arrivalTimeIndex) {
+        this.arrivalTimeIndex = arrivalTimeIndex;
+    },
     setNext:function(timeSlice) {
         this.next = timeSlice;
     },

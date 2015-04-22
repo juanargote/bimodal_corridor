@@ -93,6 +93,7 @@ function run(scenario) {
         nextTimeSlice = timeSlice;
         time = strip(time - timeStep);
         var timeSlice = new TimeSlice(time,timeStep);
+        timeSlice.setArrivalTimeIndex(i);
         timeSlice.setNext(nextTimeSlice);
         timeSliceArray.unshift(timeSlice)
     }
@@ -129,10 +130,9 @@ function run(scenario) {
 
         // Reselect arrival and update the viz
         usersChanging = bottleneck.chooseArrival(p);
-        console.log(usersChanging)
         bottleneck.sortArrivalIndex();
-        if (vizidx % 2 == 0) {
-            // reportUserArrivalEquilibrium(bottleneck);
+        if (vizidx % 15 == 0) {
+            reportUserArrivalEquilibrium(bottleneck);
         }
         vizidx += 1;
         var p = strip(p_init * (nRuns - j) / nRuns)
