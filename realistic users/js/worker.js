@@ -24,6 +24,8 @@ importScripts('d3.min.js');
 importScripts('user.js');
 importScripts('bottleneck.js');
 importScripts('timeslice.js');
+importScripts('lodash.js');
+
 
 /**
 * Define useful constants
@@ -109,7 +111,7 @@ function run(scenario) {
     // Simulate the bottleneck physics until equilibrium with current car and choice_car users
     bottleneck.serveQueue();   
     reportUserBottleneckEquilibrium(bottleneck);
-    var p_init = 0.1;
+    var p_init = 0.2;
     var usersChanging = bottleneck.chooseArrival(p_init);
     bottleneck.sortArrivalIndex();
     reportUserArrivalEquilibrium(bottleneck);
@@ -124,14 +126,14 @@ function run(scenario) {
 
         // Serve the queue, compute the costs, and update the viz
         bottleneck.serveQueue();
-        if (vizidx % 15 == 0) {
+        if (vizidx % 30 == 0) {
             reportUserBottleneckEquilibrium(bottleneck);
         }
 
         // Reselect arrival and update the viz
         usersChanging = bottleneck.chooseArrival(p);
         bottleneck.sortArrivalIndex();
-        if (vizidx % 15 == 0) {
+        if (vizidx % 30 == 0) {
             reportUserArrivalEquilibrium(bottleneck);
         }
         vizidx += 1;

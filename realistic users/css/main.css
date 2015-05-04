@@ -1,0 +1,72 @@
+@import url(http://fonts.googleapis.com/css?family=Quicksand:400,700);
+body {
+    font: 14px sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    tab-size: 2;
+    background-color: #eeeeee;
+}
+.tab-pane {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top-style: none;
+}
+.navbar {
+    border-radius: 0
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: none;
+    stroke: steelblue;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    padding: 2px;
+    font: 10px sans-serif;
+    background: steelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.circle {
+    fill: steelblue;
+    stroke: steelblue;
+}
+
+.rect {
+    fill: steelblue;
+}
+
+.bars {
+    fill: steelblue;
+}
+
+.rgroups {
+    fill: steelblue;
+}
+
+.text {
+    fill: steelblue;
+}
