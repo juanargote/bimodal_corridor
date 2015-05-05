@@ -113,6 +113,7 @@ function run(scenario) {
     var usersChanging = bottleneck.chooseArrival(p_init);
     bottleneck.sortArrivalIndex();
     reportUserArrivalEquilibrium(bottleneck);
+    reportTimeSliceArray(bottleneck);
 
     var vizidx = 1;
     // while (usersChanging > 1) {
@@ -124,15 +125,16 @@ function run(scenario) {
 
         // Serve the queue, compute the costs, and update the viz
         bottleneck.serveQueue();
-        if (vizidx % 15 == 0) {
+        if (vizidx % 20 == 0) {
             reportUserBottleneckEquilibrium(bottleneck);
         }
 
         // Reselect arrival and update the viz
         usersChanging = bottleneck.chooseArrival(p);
         bottleneck.sortArrivalIndex();
-        if (vizidx % 15 == 0) {
+        if (vizidx % 20 == 0) {
             reportUserArrivalEquilibrium(bottleneck);
+            reportTimeSliceArray(bottleneck);
         }
         vizidx += 1;
         var p = strip(p_init * (nRuns - j) / nRuns)
@@ -199,6 +201,17 @@ function reportUserArrivalEquilibrium(bottleneck){
     workerPost({
         type: 'userArrivalEquilibrium',
         value: bottleneck.userArray
+    })
+}
+
+/**
+* Broadcast the timeSlice object
+* @param {Array} timeSliceArray
+*/
+function reportTimeSliceArray(bottleneck){
+    workerPost({
+        type: 'timeSliceArray',
+        value: bottleneck.timeSliceArray
     })
 }
 

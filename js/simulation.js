@@ -37,6 +37,9 @@ scenarios.forEach(function(d,i,a) {
             case 'userArrivalEquilibrium':
                 updateUserArrivalVisualization(e.data.value);
                 break;
+            case 'timeSliceArray':
+                initialCostVisualization(e.data.value,d.wishedTime,d.e,d.L);
+                break;
             case 'result':
                 results.push(e.data.value)
                 if (results.length == scenarios.length) {

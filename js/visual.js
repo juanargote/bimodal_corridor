@@ -4,12 +4,15 @@
 */
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 900 - margin.left - margin.right,
-    height = 350 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
     .range([0, width]);
 
 var y = d3.scale.linear()
+    .range([height, 0]);
+
+var yCost = d3.scale.linear()
     .range([height, 0]);
 
 var color = d3.scale.category10();
@@ -21,6 +24,12 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
+
+var yCostAxis = d3.svg.axis()
+    .scale(yCost)
+    .orient("left");
+
+var costData = [];
 
 /**
 * Plot the initial user visualization.
@@ -201,3 +210,69 @@ function updateUserArrivalVisualization(userArray){
     wishedTimes.exit().transition(2500)
             .remove();
 }
+
+/**
+* Plot the initial user visualization.
+* @param {Array} userArray
+*/
+function initialCostVisualization(timeSliceArray,wishedTime,e,L){
+    
+    var costLine = d3.select("#cost-line")
+
+    costData = timeSliceArray.map(function(timeSlice){
+            var delayOnDeparture = (+timeSlice.startTime + timeSlice.delay) - wishedTime;
+            var cost = (delayOnDeparture >= 0) ? +L * delayOnDeparture : -e * delayOnDeparture;
+            return {'startTime':strip(timeSlice.startTime),
+                'cost':timeSlice.delay + cost}; 
+        })
+
+    var line = d3.svg.line()
+            .x(function(d){return x(d.startTime)})
+            .y(function(d){return yCost(d.cost)});
+
+    if (costLine.empty()) {
+        var svg = d3.select("#main").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        yCost.domain(d3.extent(costData.map(function(d){return d.cost}))).nice();
+        
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+          .append("text")
+            .attr("class", "label")
+            .attr("x", width)
+            .attr("y", -6)
+            .style("text-anchor", "end")
+            .text("Time (hr)");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yCostAxis)
+            .append("text")
+                .attr("class", "label")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Cumulative Users")
+
+        svg.append("path")
+                .datum(costData)
+                .attr("class", "line")
+                .attr("id","cost-line")
+                .attr("d",line);
+    } else {
+        costLine.datum(costData).transition().attr("d",line)
+    }
+
+}
+
+/**
+* Update the user cost
+* @param{Array} timeSliceArray
+*/
